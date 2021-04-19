@@ -33,7 +33,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 dogNameInput.value = data[i].name;
                 dogBreedInput.value = data[i].breed;
                 dogSexInput.value = data[i].sex;
+
+                const submitEditButton = document.getElementById('submitButton');
+                submitEditButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+            
+                    fetch(`http://localhost:3000/dogs/${data[i].id}`, {
+                        method: "PATCH",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json"
+                        },
+                        body: JSON.stringify({
+                            name: dogNameInput.value,
+                            breed: dogBreedInput.value,
+                            sex: dogSexInput.value,
+            
+                        })
+                    })
+                }) 
+
             })
         }
     }
+
 })
