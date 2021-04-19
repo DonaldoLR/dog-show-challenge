@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetch(`http://localhost:3000/dogs`)
     .then(res => res.json())
-    .then(data => displayDogs(data))
+    .then(data => {
+        displayDogs(data);
+        addListenerToEdit(data);
+    })
     
     function displayDogs(data){
         for (let i = 0; data.length > i; i++){
@@ -11,9 +14,26 @@ document.addEventListener('DOMContentLoaded', () => {
             <td>${data[i].name}</td>
             <td>${data[i].breed}</td>
             <td>${data[i].sex}</td>
-            <button id='edit-dog-button'>Edit</button>
+            <button class='edit-dog-button'>Edit</button>
             `
             document.getElementById('table-body').appendChild(createTr);
+        }
+    }
+    function addListenerToEdit(data){
+        const editButtonArray = Array.from(document.getElementsByClassName('edit-dog-button'));
+
+        for (let i = 0; editButtonArray.length > i; i++) {
+            editButtonArray[i].addEventListener('click', (e) => {
+                e.preventDefault();
+
+                let dogNameInput = document.getElementById('inputName');
+                let dogBreedInput = document.getElementById('inputBreed');
+                let dogSexInput = document.getElementById('inputSex');
+
+                dogNameInput.value = data[i].name;
+                dogBreedInput.value = data[i].breed;
+                dogSexInput.value = data[i].sex;
+            })
         }
     }
 })
